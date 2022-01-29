@@ -1,12 +1,22 @@
 import requests
 
-UNICODE_DATA_URL = "https://www.unicode.org/Public/14.0.0/ucd/UnicodeData.txt"
-UNICODE_DATA_PATH = "data/UnicodeData.txt"
+FILES = [
+    "UnicodeData.txt",
+    "PropertyAliases.txt",
+    "PropertyValueAliases.txt",
+]
 
-def from_urls():
-    with open(UNICODE_DATA_PATH, "w") as f:
-        response = requests.get(UNICODE_DATA_URL)
-        f.write(response.text)
+DATA_DIR = "data"
+
+UCD_URL = "https://www.unicode.org/Public/14.0.0/ucd"
+
+def all():
+    for filename in FILES:
+        path = "{}/{}".format(DATA_DIR, filename)
+        with open(path, "w") as f:
+            url = "{}/{}".format(UCD_URL, filename)
+            response = requests.get(url)
+            f.write(response.text)
 
 if __name__ == "__main__":
-    from_urls()
+    all()
