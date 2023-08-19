@@ -1,5 +1,6 @@
-data_dir := 'data'
-out_dir := 'target'
+data_dir := "data"
+out_dir := "target"
+db_path := "target/unicode.db"
 
 default: construct
 
@@ -10,13 +11,13 @@ download:
     python3 src/download.py
 
 tree:
-    tree
+    tree -I __pycache__
 
 schema:
-    sqlite3 out/unicode.db ".schema"
+    sqlite3 {{db_path}} ".schema"
 
 head:
-    sqlite3 out/unicode.db "select * from UnicodeData LIMIT 10"
+    sqlite3 {{db_path}} "select * from UnicodeData LIMIT 10"
 
 clean:
     rm {{data_dir}}/*

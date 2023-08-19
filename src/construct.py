@@ -1,17 +1,26 @@
 # builds the sqlite3 database
 
+DB_PATH = "target/unicode.db"
+
 import sqlite3
+import property_value_aliases
 
 def construct():
-    db = sqlite3.connect("target/unicode.db")
-    try:
-        db.execute("DROP TABLE UnicodeData")
-    except: pass
+    db = sqlite3.connect(":memory:")
     unicode_data_table(db)
+
+    property_value_aliases.construct(db)
+
+    write_db(db)
     db.close()
 
+def write_db(db):
+    write_db = sqlite3.connect(DB_PATH)
+    db.backup(write_db)
+    write_db.close()
+
 def unicode_data_table(db):
-    
+
     cursor = db.cursor()
     cursor.execute('''
         CREATE TABLE UnicodeData(
